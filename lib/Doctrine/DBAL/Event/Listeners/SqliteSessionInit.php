@@ -13,19 +13,17 @@ class SqliteSessionInit implements EventSubscriber
 {
     /**
      * @param \Doctrine\DBAL\Event\ConnectionEventArgs $args
-     *
-     * @return void
      */
-    public function postConnect(ConnectionEventArgs $args)
+    public function postConnect(ConnectionEventArgs $args): void
     {
         $conn = $args->getConnection();
         $conn->exec('PRAGMA foreign_keys = on');
     }
 
     /**
-     * {@inheritdoc}
+     * @return string[]
      */
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return [Events::postConnect];
     }
