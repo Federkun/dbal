@@ -9,6 +9,7 @@
 >
     <php>
         <ini name="error_reporting" value="-1" />
+        <var name="db_event_subscribers" value="Doctrine\DBAL\Event\Listeners\SqliteSessionInit"/>
     </php>
 
     <testsuites>

@@ -77,8 +77,14 @@ class ExceptionTest extends DbalFunctionalTestCase
 
     public function testForeignKeyConstraintViolationExceptionOnInsert() : void
     {
-        if (! $this->connection->getDatabasePlatform()->supportsForeignKeyConstraints()) {
-            $this->markTestSkipped('Only fails on platforms with foreign key constraints.');
+        if ($this->connection->getDatabasePlatform()->getName() == 'sqlite') {
+            if ( ! $this->connection->executeQuery('PRAGMA foreign_keys')->fetchColumn(0)) {
+                $this->markTestSkipped(
+                    "Only fails on the sqlite platform when foreign key support is enabled."
+                );
+            }
+        } else if ( ! $this->connection->getDatabasePlatform()->supportsForeignKeyConstraints()) {
+            $this->markTestSkipped("Only fails on platforms with foreign key constraints.");
         }
 
         $this->setUpForeignKeyConstraintViolationExceptionTest();
